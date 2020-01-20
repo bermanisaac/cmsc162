@@ -1,0 +1,62 @@
+\newcommand{\labname}{Homework 0}
+\documentclass[11pt]{article}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+% TODO: CHANGE THESE !!!
+\newcommand{\myname}{Isaac Berman} % Full Name
+\newcommand{\mycnetid}{bermani} % CNetID
+
+% header
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CMSC 16200 \labname}
+\chead{\myname{} (\mycnetid)}
+\rhead{Page \thepage{} of \pageref{mylastpagelabel}}
+
+% document starts
+\begin{document}
+\paragraph{Task 4.1}
+% Answer for Task XXX goes in here:
+\paragraph{Puzzle 1:}
+
+The \verb|VOL(X,Y,Z)| macro directly inserted each parameter directly into the multiplication rather than evaluating the parameter beforehand. This caused an unintended use of operator precedence, multiplying before adding terms within the parameters.
+
+To fix this, parentheses were added to the macro, so it now reads \verb|VOL(X,Y,Z) ((X)*(Y)*(Z))|
+
+\paragraph{Puzzle 2:}
+
+As originally written, this code didn't swap the integers pointed at, but rather which integer was pointed at by each pointer within the swap function.
+
+To remedy this, the method was refactored to deal in values, not pointers. Dereferencing operators were added to \verb|x| and \verb|y| while \verb|temp| was made to hold an \verb|int| rather than a \verb|*int|.
+
+\paragraph{Puzzle 3:}
+
+This snippet functions as intended.
+
+\paragraph{Puzzle 4:}
+
+This snippet functions as intended. Added parentheses in conditionals to stop compiler precedence warnings.
+
+\paragraph{Puzzle 5:}
+
+This snippet functions as intended. Removed the useless \verb|a| parameter to stop compiler warnings. Not sure if this remedy is
+
+\paragraph{Puzzle 6:}
+
+The \verb|set_vector| function had a parameter called \verb|v|, but used an uninitialized variable named \verb|value|.
+
+Fixed by changing \verb|value| to \verb|v|.
+
+\paragraph{Task 5.1} The assignment was turned in 3 days late. One day's pass is subtracted, resulting in a net penalty of 20\%. The final score is $75 * .8 = 60$.
+
+\paragraph{Task 5.2:} To request a re-grade, I would post a private question on Piazza, ideally withing 5 business days if I wanted a helpful response.
+
+\paragraph{Task 5.3:} Jon and Daenerys were very close to being in the clear. Their first actions were only slightly out of line. Jon should have gone to office hours or posted on Piazza, while Daenerys should have given just the hints from office hours, not full psuedocode. While these could have been permissible in isolation, that fact that neither of them made any mention of the collaboration throws any academic honesty out the window. They have both broken the honesty policies, though Jon more significantly so than Daenerys.
+
+% This label is used in the header to keep track of the page count.
+\label{mylastpagelabel}
+
+\end{document}
