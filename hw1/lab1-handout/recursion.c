@@ -19,7 +19,8 @@ void pSum(list* l) {
   if(l->next == NULL) return;
   list* next = l->next;
   next->data = l->data + next->data;
-  return pSum(next);
+  pSum(next);
+  return;
 }
 
 void prefixSum(linked_list *L) {
