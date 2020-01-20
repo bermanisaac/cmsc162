@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include "list.h"
 
+#define NEXT(P) P = P->next
+
 void print_list(linked_list *L) {
     if (L == NULL) return;
     if (L->head == NULL || L->length == 0) {
@@ -25,31 +27,61 @@ void print_list(linked_list *L) {
 }
 
 linked_list *empty() {
-    printf("Not yet implemented!\n");
-    return NULL;
+    linked_list* rv = malloc(sizeof(*rv));
+    rv->length = 0;
+    rv->head = NULL;
+    return rv;
 }
 
 linked_list *singleton(int data) {
-    printf("Not yet implemented!\n");
-    return NULL;
+    linked_list* rv = empty();
+    list* val = malloc(sizeof(*val));
+    val->data = data;
+    val->next = NULL;
+    rv->length = 1;
+    rv->head = val;
+    return rv;
 }
 
+
 void append(linked_list *L, int data) {
-    printf("Not yet implemented!\n");
+    list* new = malloc(sizeof (*new));
+    new->data = data;
+    new->next = NULL;
+    if(L->length == 0) L->head = new;
+    else {
+      list* i = L->head;
+      while(i->next != NULL) NEXT(i);
+      i->next = new;
+    }
+    L->length++;
     return;
 }
 
 void cons(int data, linked_list *L) {
-    printf("Not yet implemented!\n");
+    list* new = malloc(sizeof (*new));
+    new->data = data;
+    new->next = L->head;
+    L->head = new;
+    L->length++;
     return;
 }
 
 int pop(linked_list *L) {
-    printf("Not yet implemented!\n");
-    return 1;
+    if(L->length == 0) {
+      printf("pop error: empty list\n");
+      return 1;
+    }
+    L->length--;
+    list* ptr = L->head;
+    L->head = ptr->next;
+    int rv = ptr->data;
+    free(ptr);
+    return rv;
 }
 
 void free_list(linked_list *L) {
-    printf("Not yet implemented!\n");
+    while(L->length != 0) pop(L);
+    free(L);
     return;
 }

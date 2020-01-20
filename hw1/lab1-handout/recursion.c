@@ -15,12 +15,24 @@ double power(int x, int y) {
     return y == 0 ? (double) x : (double) x * (power(x, y + (y > 0 ? -1 : 1)));
 }
 
+void pSum(list* l) {
+  if(l->next == NULL) return;
+  list* next = l->next;
+  next->data = l->data + next->data;
+  return pSum(next);
+}
+
 void prefixSum(linked_list *L) {
-    printf("Not yet implemented!\n");
+    pSum(L->head);
     return;
 }
 
+bool sSum(list* l, int n) {
+    if(n == 0) return true;
+    if(l == NULL) return false;
+    return sSum(l->next, n) || sSum(l->next, n - l->data);
+}
+
 bool subsetSum(linked_list *S, int n) {
-    printf("Not yet implemented!\n");
-    return false;
+    return sSum(S->head, n);
 }

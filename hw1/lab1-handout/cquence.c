@@ -16,7 +16,7 @@
 strand *copy_strand(strand *S) {
   IF_NULL(S, return NULL);
   strand* newS = empty_strand();
-  for(seq* old = S->head; old != NULL; old = old->next) {
+  for(seq* old = S->head; old != NULL; NEXT(old)) {
     strand_cons(old->data, newS);
   }
   return newS;
@@ -25,7 +25,7 @@ strand *copy_strand(strand *S) {
 
 strand *join(strand *S1, strand *S2) {
     strand* newS = copy_strand(S1);
-    for(seq* runner = S2->head; runner != NULL; runner = runner->next) strand_cons(runner->data, newS);
+    for(seq* runner = S2->head; runner != NULL; NEXT(runner)) strand_cons(runner->data, newS);
     return newS;
 }
 
@@ -37,11 +37,11 @@ strand *interleave(strand *S1, strand *S2) {
     while(run1 != NULL || run2 != NULL) {
       if(run1 != NULL) {
         strand_cons(run1->data, newS);
-        run1 = run1->next;
+        NEXT(run1);
       }
       if(run2 != NULL) {
         strand_cons(run2->data, newS);
-        run2 = run2->next;
+        NEXT(run2);
       }
     }
     return newS;
@@ -60,15 +60,15 @@ int inject(strand *S, strand *Sub, int pos) {
       afterInject = startPoint;
       S->head = newSub->head;
       startPoint = S->head;
-      while(startPoint->next != NULL) startPoint = startPoint->next;
+      while(startPoint->next != NULL) NEXT(startPoint);
       startPoint->next = afterInject;
     } else {
       while(--pos > 0) {
-        startPoint = startPoint->next;
+        NEXT(startPoint);
       }
       afterInject = startPoint->next;
       startPoint->next = newSub->head;
-      while(startPoint->next != NULL) startPoint = startPoint->next;
+      while(startPoint->next != NULL) NEXT(startPoint);
       startPoint->next = afterInject;
     }
     return 0;
@@ -77,8 +77,7 @@ int inject(strand *S, strand *Sub, int pos) {
 bool isPrefixSeq(seq* base, seq* prefix) {
   while(prefix->next != NULL) {
     if(base->data != prefix->data) return false;
-    base = base->next;
-    prefix = prefix->next;
+    NEXT(base), NEXT(prefix);
   }
   return true;
 }
@@ -96,14 +95,35 @@ int find(strand *S, strand *Sub) {
     IF_NULL(S, return -1);
     IF_NULL(Sub, return -1);
     if(S->length < Sub->length) return -1;
-
-    for(int 1 = 0, seq* index = S->head; index->next != NULL; i++, index = index->next) {
+    int i = 0;
+    for(seq* index = S->head; index->next != NULL; i++, index = index->next) {
       if(isPrefixSeq(index, Sub->head)) return i;
     }
     return -1;
 }
 
 int snip(strand *S, strand *Sub) {
-    printf("Not yet implemented!\n");
-    return 1;
+    int index = find(S, Sub);
+    if(index < 0) return 1;
+
+    int len = Sub->length;
+    S->length -= len;
+    seq *counter = S->head, *oldRef = S->head, *third;
+    while(index > 0) {
+      NEXT(counter);
+      if(index > 1) NEXT(oldRef);
+      index--;
+    }
+    // if(counter != oldRef->next) printf("basd\n");
+    third = counter;
+    while(len-- > 0) NEXT(third);
+    if(counter == S->head) S->head = third;
+    else oldRef->next = third;
+    len = Sub->length;
+    while(len-- > 0) {
+      oldRef = counter;
+      NEXT(counter);
+      free(oldRef);
+    }
+    return 0;
 }

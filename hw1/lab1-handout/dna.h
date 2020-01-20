@@ -6,6 +6,7 @@
 #define _DNA_H_
 
 #define IF_NULL(P, R) if(P == NULL) R;
+#define NEXT(P) P = P->next
 
 typedef struct dna_header strand;
 

@@ -14,9 +14,9 @@ int main(void) {
     print_seq(c);
     strand *d = interleave(a,b);
     print_seq(d);
-    inject(a,b,2);
+    inject(a,b,1);
     print_seq(a);
-    inject(a,b,5);
+    inject(a,b,7);
     print_seq(a);
     printf(isPrefix(b,a) ? "Is prefix\n" : "Isn't prefix\n");
     printf("%d\n",find(a,b));
