@@ -14,7 +14,7 @@ int main() {
     unsigned int height;
     pixelID parentID[ROWS][COLS]; // Array implementation of up trees
     graph G[5];
-    pixel* outPixels[ROWS][COLS];
+    pixel outPixels[ROWS][COLS];
 
     provided_read_png("img/B128.png", pixels, &width, &height);
     G[0] = pixel_graph_new(width, height, pixels);
@@ -37,7 +37,7 @@ int main() {
         outPixels[i + 138 + 138][j] = pixels[i][j];
       }
     }
-    provided_read_png("img/IIWB.png", pixels, &width, &height);
+    provided_read_png("img/IIWB128.png", pixels, &width, &height);
     G[3] = pixel_graph_new(width, height, pixels);
     for(unsigned int i = 0; i < width; i++) {
       for(unsigned int j = 0; j < height; j++) {
@@ -56,6 +56,11 @@ int main() {
       up_trees_new(G[i], parentID);
       run_union_find(G[i], parentID, true);
       label_connected_components(G[i], parentID);
+      for(unsigned int j = 0; j < width; j++) {
+        for(unsigned int k = 0; k < height; k++) {
+          outPixels[j + (138 * i)][k + 138] = pixels[j][k];
+        }
+      }
     }
 
     provided_write_png("img/myOut.png", outPixels, OUTWID, OUTLEN);
