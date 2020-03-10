@@ -58,7 +58,7 @@ int main() {
       label_connected_components(G[i], parentID);
       for(unsigned int j = 0; j < width; j++) {
         for(unsigned int k = 0; k < height; k++) {
-          outPixels[j + (138 * i)][k + 138] = pixels[j][k];
+          outPixels[j + (138 * i)][k + 138] = G[i]->pixels[j][k];
         }
       }
     }
